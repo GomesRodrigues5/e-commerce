@@ -5,3 +5,12 @@ node_modules/
 npm-debug.log*
 coverage/
 .DS_Store
+/node
+/node.exe
+/nodevars.bat
+/npm
+/npm.cmd
+/npm.ps1
+/npx
+/npx.cmd
+/npx.ps1
