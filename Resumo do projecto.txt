@@ -1,0 +1,23 @@
+Sou programador web.
+Criar um site online e profissional e atraente para vendas de roupas de ginástica e material de ginástica ( deve ter categorias de roupas para homens, mulheres, pesos, suplementos e muito mais).
+O site deve estar 100% responsivo para smartphone e computador. Deve ter área administrativa e área de contacto, Sobre, colocar gosto nos produtos deixar comentários, visualizar e adicionar ao carrinho e comprar. 
+
+Ferramentas e Tecnologias 
+1. HTML 5
+2. Bootstrap 
+3. Post 
+5. JavaScript 
+6. Session
+7. SQL
+8.php
+
+Vou gerar agora um aplicativo de comércio eletrônico profissional e completo para roupas e materiais de ginástica, com carrinho interativo, sistema de favoritos, comentários e uma área administrativa integrada em um único arquivo HTML responsivo.
+
+### Resumo das Funcionalidades Implementadas:
+
+1. **Design E-commerce Profissional:** Layout moderno, paleta elegante em tons escuros e cinza moderno, totalmente responsivo para telemóveis e computadores com Bootstrap 5.
+2. **Navegação & Categorias:** Menu superior intuitivo com atalhos rápidos e categorias destacadas (*Homens, Mulheres, Pesos, Suplementos, Acessórios*).
+3. **Carrinho de Compras Interativo & Checkout:** Adição e remoção de itens em tempo real, contador automático e modal de checkout simulado.
+4. **Sistema de Favoritos (Gosto) & Avaliações:** Marcação de itens favoritos com contagem no cabeçalho e modal de detalhes do produto contendo seção de comentários dinâmicos.
+5. **Seções "Sobre" e "Contato":** História da marca consolidada e formulário de contato integrado que persiste as mensagens no armazenamento local.
+6. **Área Administrativa (Admin Dashboard):** Painel gerencial completo acessível pelo botão superior, contendo estatísticas de vendas, gráficos interativos via Chart.js, tabela de mensagens recebidas e gestão de pedidos.

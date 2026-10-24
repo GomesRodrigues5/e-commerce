@@ -1,0 +1,88 @@
+{
+  "provinces": [
+    {
+      "name": "Bengo",
+      "municipalities": ["Ambriz", "Bula Atumba", "Dande", "Dembos", "Nambuangongo", "Pango Aluquém"]
+    },
+    {
+      "name": "Benguela",
+      "municipalities": ["Balombo", "Baía Farta", "Benguela", "Bocoio", "Caimbambo", "Catumbela", "Chongoroi", "Ganda", "Lobito", "Lobito Ocidental"]
+    },
+    {
+      "name": "Bié",
+      "municipalities": ["Andulo", "Camacupa", "Catabola", "Chinguar", "Chitembo", "Cuemba", "Cunhinga", "Cuíto", "Nharea"]
+    },
+    {
+      "name": "Cabinda",
+      "municipalities": ["Belize", "Buco-Zau", "Cabinda", "Cacongo"]
+    },
+    {
+      "name": "Cuando",
+      "municipalities": ["Calai", "Cuangar", "Cuchi", "Menongue"]
+    },
+    {
+      "name": "Cubango",
+      "municipalities": ["Cuito Cuanavale", "Dirico", "Mavinga", "Nancova", "Rivungo"]
+    },
+    {
+      "name": "Cuanza Norte",
+      "municipalities": ["Ambaca", "Banga", "Bolongongo", "Cambambe", "Cazengo", "Golungo Alto", "Gonguembo", "Lucala", "Quiculungo", "Samba Caju"]
+    },
+    {
+      "name": "Cuanza Sul",
+      "municipalities": ["Amboim", "Cassongue", "Cela", "Conda", "Ebo", "Libolo", "Mussende", "Porto Amboim", "Quibala", "Quilenda", "Seles", "Sumbe"]
+    },
+    {
+      "name": "Cunene",
+      "municipalities": ["Cahama", "Cuanhama", "Curoca", "Cuvelai", "Namacunde", "Ombadja"]
+    },
+    {
+      "name": "Huambo",
+      "municipalities": ["Bailundo", "Cáala", "Catchiungo", "Ekunha", "Huambo", "Londuimbavali", "Longonjo", "Mungo", "Chicala-Choloanga", "Chinjenje", "Ucuma"]
+    },
+    {
+      "name": "Huíla",
+      "municipalities": ["Caconda", "Cacula", "Caluquembe", "Chiange", "Chibia", "Chicomba", "Chipindo", "Humpata", "Jamba", "Lubango", "Matala", "Quilengues", "Quipungo"]
+    },
+    {
+      "name": "Icolo e Bengo",
+      "municipalities": ["Icolo e Bengo", "Quiçama"]
+    },
+    {
+      "name": "Luanda",
+      "municipalities": ["Belas", "Cacuaco", "Cazenga", "Luanda", "Kilamba Kiaxi", "Talatona", "Viana"]
+    },
+    {
+      "name": "Lunda Norte",
+      "municipalities": ["Cambulo", "Capenda-Camulemba", "Caungula", "Chitato", "Cuango", "Cuílo", "Lóvua", "Lubalo", "Lucapa", "Xá-Muteba"]
+    },
+    {
+      "name": "Lunda Sul",
+      "municipalities": ["Cacolo", "Dala", "Muonda", "Saurimo"]
+    },
+    {
+      "name": "Malanje",
+      "municipalities": ["Cacuso", "Calandula", "Cambundi-Catembo", "Cangandala", "Cuaba Nzogo", "Cunda-dia-Baze", "Luquembo", "Malanje", "Marimba", "Massango", "Mucari", "Quela", "Quirima", "Sautar"]
+    },
+    {
+      "name": "Moxico",
+      "municipalities": ["Camanongue", "Léua", "Luau", "Luacano", "Moxico"]
+    },
+    {
+      "name": "Moxico Leste",
+      "municipalities": ["Alto Zambeze", "Bundas", "Cameia", "Lumeje"]
+    },
+    {
+      "name": "Namibe",
+      "municipalities": ["Bibala", "Camucuio", "Moçâmedes", "Tômbwa", "Virei"]
+    },
+    {
+      "name": "Uíge",
+      "municipalities": ["Alto Cauale", "Ambuíla", "Bembe", "Buengas", "Bungo", "Damba", "Milunga", "Mucaba", "Negage", "Puri", "Quimbele", "Quitexe", "Sanza Pombo", "Songo", "Uíge", "Zombo"]
+    },
+    {
+      "name": "Zaire",
+      "municipalities": ["Cuimba", "Mbanza Kongo", "Noqui", "N'zeto", "Soyo", "Tomboco"]
+    }
+  ]
+}

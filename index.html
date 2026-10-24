@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexFit | Moda Fitness & Equipamentos Profissionais</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            background-color: #0f172a;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.86)), url('src/img/fundo.jpg');
+            background-position: center;
+            background-size: cover;
+            color: #ffffff;
+            padding: 80px 0;
+            border-radius: 0 0 2rem 2rem;
+        }
+        .hero-logo-wrap {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            isolation: isolate;
+        }
+        .hero-logo-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 7% 10%;
+            z-index: -2;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.55);
+            filter: blur(28px);
+        }
+        .hero-logo-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 1%;
+            z-index: -1;
+            border: 1px solid rgba(94, 234, 212, 0.28);
+            border-radius: 2rem;
+            box-shadow: 0 0 28px rgba(45, 212, 191, 0.10), inset 0 0 18px rgba(15, 23, 42, 0.20);
+        }
+        .hero-logo {
+            width: 140%;
+            max-width: 140%;
+            filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.42));
+        }
+        .product-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .badge-category {
+            background-color: #e2e8f0;
+            color: #475569;
+            font-weight: 500;
+        }
+        .badge-category.active {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+        .notification-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1055;
+        }
+        .navbar-logo {
+            width: 220px;
+            height: 68px;
+            object-fit: contain;
+        }
+        @media (max-width: 575px) {
+            .navbar-logo {
+                width: 175px;
+                height: 58px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-5 text-dark d-flex align-items-center gap-2" href="#" onclick="showSection('home')">
+                <img src="src/img/Prancheta 23Logo Faltou Odio.png" alt="Logotipo Faltou Ódio" class="navbar-logo">
+                <span class="text-primary"></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto align-items-lg-center gap-lg-3">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium active" href="#" onclick="showSection('home')">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#" onclick="showSection('catalog')">Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#" onclick="showSection('about')">Sobre Nós</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="#" onclick="showSection('contact')">Contato</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    <button class="btn btn-outline-dark position-relative rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#wishlistModal">
+                        <i class="fa-solid fa-heart text-danger"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="wishlistCount">0</span>
+                    </button>
+                    <button class="btn btn-dark position-relative rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount">0</span>
+                    </button>
+                    <button id="accountButton" class="btn btn-outline-primary rounded-pill px-3 fw-medium" data-bs-toggle="modal" data-bs-target="#accountModal">
+                        <i class="fa-solid fa-user me-1"></i><span id="accountButtonLabel">Criar conta / Entrar</span>
+                    </button>
+                    <a class="btn btn-primary rounded-pill px-3 fw-medium" href="admin.html">
+                        <i class="fa-solid fa-gauge-high me-1"></i> Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContent">
+        
+        <!-- SECTION: HOME -->
+        <section id="sec-home" class="content-section">
+            <div class="hero-section container-fluid mb-5">
+                <div class="container py-5">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-6">
+                            <span class="badge bg-primary bg-opacity-25 text-primary px-3 py-2 rounded-pill fw-semibold mb-3">NOVA COLEÇÃO 2026</span>
+                            <h1 class="display-4 fw-bold mb-3">Supere Seus Limites com Equipamentos de Elite</h1>
+                            <p class="lead text-white mb-4">Roupas de ginástica de alta performance, pesos ajustáveis e suplementos certificados para transformar o seu treino.</p>
+                            <div class="d-flex gap-3">
+                                <button class="btn btn-primary btn-lg rounded-pill px-4 fw-semibold" onclick="showSection('catalog')">Explorar Loja</button>
+                                <button class="btn btn-outline-light btn-lg rounded-pill px-4 fw-semibold" onclick="showSection('about')">Conheça a Marca</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex justify-content-center align-items-center text-center">
+                            <div class="hero-logo-wrap">
+                                <img src="src/img/ImagemLogo.png" alt="Logotipo Faltou Ódio" class="hero-logo img-fluid rounded-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Destaques por Categoria -->
+            <div class="container mb-5">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Categorias Principais</h2>
+                    <p class="text-muted">Encontre tudo o que precisa para o seu treino diário</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card product-card text-white text-center p-4 bg-dark border-0 h-100" style="cursor: pointer;" onclick="filterByCategory('Mulheres')">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <i class="fa-solid fa-person-dress fa-3x mb-3 text-primary"></i>
+                                <h3>Mulheres</h3>
+                                <p class="text-muted small">Leggings, Tops e Conjuntos Estilosos</p>
+                            </div>
+                        </div>
+                        <div id="advertisementPanel" class="container mb-5 d-none">
+                            <h2 class="h4 fw-bold mb-3">Parceiros e novidades</h2>
+                            <div id="advertisementGrid" class="row g-3"></div>
+                        </div>
+                        <div id="recommendationsPanel" class="container mb-5 d-none">
+                            <h2 class="h4 fw-bold mb-1">Recomendado para si</h2>
+                            <p id="recommendationMessage" class="text-muted small mb-3"></p>
+                            <div id="recommendationGrid" class="row g-3"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card product-card text-white text-center p-4 bg-dark border-0 h-100" style="cursor: pointer;" onclick="filterByCategory('Homens')">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <i class="fa-solid fa-person fa-3x mb-3 text-primary"></i>
+                                <h3>Homens</h3>
+                                <p class="text-muted small">Camisetas Dry-Fit, Bermudas e Regatas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card product-card text-white text-center p-4 bg-dark border-0 h-100" style="cursor: pointer;" onclick="filterByCategory('Pesos')">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <i class="fa-solid fa-dumbbell fa-3x mb-3 text-primary"></i>
+                                <h3>Pesos</h3>
+                                <p class="text-muted small">Halteres, Anilhas e Barras Profissionais</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: CATALOG -->
+        <section id="sec-catalog" class="content-section d-none py-5">
+            <div class="container">
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-6">
+                        <h2 id="catalogHeading" class="fw-bold mb-1">Catálogo de Produtos</h2>
+                        <p class="text-muted mb-0">Explore nossa linha completa de vestuário e equipamentos</p>
+                    </div>
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
+                            <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Pesquisar produtos..." onkeyup="filterProducts()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros por Categoria -->
+                <div class="d-flex flex-wrap gap-2 mb-4" id="categoryFilters">
+                    <button class="btn badge-category active rounded-pill px-3 py-2" onclick="filterByCategory('Todos')">Todos</button>
+                    <button class="btn badge-category rounded-pill px-3 py-2" onclick="filterByCategory('Homens')">Homens</button>
+                    <button class="btn badge-category rounded-pill px-3 py-2" onclick="filterByCategory('Mulheres')">Mulheres</button>
+                    <button class="btn badge-category rounded-pill px-3 py-2" onclick="filterByCategory('Pesos')">Pesos</button>
+                    <button class="btn badge-category rounded -pill px-3 py-2" onclick="filterByCategory('Suplementos')">Suplementos</button>
+                    <button class="btn badge-category rounded-pill px-3 py-2" onclick="filterByCategory('Acessórios')">Acessórios</button>
+                </div>
+
+                <!-- Grid de Produtos -->
+                <div class="row g-4" id="productGrid">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: ABOUT -->
+        <section id="sec-about" class="content-section d-none py-5">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <img src="https://placehold.co/600x500/0f172a/ffffff?text=Sobre+ApexFit" alt="Sobre Nós" class="img-fluid rounded-4 shadow-sm">
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="badge bg-primary bg-opacity-25 text-primary px-3 py-2 rounded-pill fw-semibold mb-3">NOSSA HISTÓRIA</span>
+                        <h2 class="fw-bold mb-4">Comprometidos com a sua Evolução Física e Mental</h2>
+                        <p class="text-muted mb-3">Fundada por entusiastas do fitness e atletas profissionais, a ApexFit nasceu com o propósito de fornecer roupas e equipamentos de alta durabilidade e design ergonômico para quem não aceita desculpas.</p>
+                        <p class="text-muted mb-4">Trabalhamos com tecidos tecnológicos respiráveis que acompanham cada movimento do seu corpo e equipamentos rigorosamente testados para garantir segurança máxima nos treinos intensos.</p>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="p-3 bg-white rounded-3 shadow-sm border">
+                                    <h3 class="fw-bold text-primary mb-1">+15k</h3>
+                                    <p class="text-muted mb-0 small">Atletas Satisfeitos</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-white rounded-3 shadow-sm border">
+                                    <h3 class="fw-bold text-primary mb-1">100%</h3>
+                                    <p class="text-muted mb-0 small">Garantia de Qualidade</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: CONTACT -->
+        <section id="sec-contact" class="content-section d-none py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+                            <div class="text-center mb-4">
+                                <h2 class="fw-bold">Fale Conosco</h2>
+                                <p class="text-muted">Tem alguma dúvida sobre pedidos, entregas ou produtos? Envie sua mensagem.</p>
+                            </div>
+                            <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Nome Completo</label>
+                                    <input type="text" class="form-control" id="contactName" required placeholder="Seu nome">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">E-mail</label>
+                                    <input type="email" class="form-control" id="contactEmail" required placeholder="seu@email.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium" for="contactSubject">Assunto</label>
+                                    <input type="text" class="form-control" id="contactSubject" maxlength="200" required placeholder="Sobre o que deseja falar?">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Mensagem</label>
+                                    <textarea class="form-control" id="contactMsg" rows="4" required placeholder="Como podemos ajudar?"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-semibold">Enviar Mensagem</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Detalhes do Produto & Comentários -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="modalProductName">Detalhes do Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <img id="modalProductImg" src="" alt="Produto" class="img-fluid rounded-3 w-100 object-fit-cover" style="height: 250px;">
+                        </div>
+                        <div class="col-md-6">
+                            <span class="badge bg-light text-dark mb-2" id="modalProductCategory">Categoria</span>
+                            <h3 class="fw-bold mb-2" id="modalProductTitle">Nome</h3>
+                            <h4 class="text-primary fw-bold mb-3" id="modalProductPrice">0 KZ</h4>
+                            <p class="small fw-semibold mb-2" id="modalProductStock"></p>
+                            <p class="text-muted small mb-4" id="modalProductDesc">Descrição detalhada do equipamento ou vestuário de ginástica.</p>
+                            <button class="btn btn-primary w-100 rounded-pill fw-semibold mb-2" id="modalAddToCartBtn">Adicionar ao Carrinho</button>
+                        </div>
+                    </div>
+
+                    <!-- Seção de Comentários / Avaliações -->
+                    <hr class="my-4">
+                    <h5 class="fw-bold mb-3">Avaliações dos Clientes</h5>
+                    <div id="commentsList" class="mb-3" style="max-height: 150px; overflow-y: auto;">
+                        <!-- Comentários injetados -->
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="newCommentInput" class="form-control" placeholder="Deixe seu comentário ou avaliação...">
+                        <button class="btn btn-dark" onclick="addComment()">Comentar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Carrinho de Compras -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-cart-shopping me-2"></i> Carrinho de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItemsList" class="mb-3" style="max-height: 250px; overflow-y: auto;">
+                        <!-- Itens do carrinho -->
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center fw-bold fs-5 mb-4 border-top pt-3">
+                        <span>Total:</span>
+                        <span id="cartTotalPrice" class="text-primary">0 KZ</span>
+                    </div>
+                    <button class="btn btn-success w-100 py-3 rounded-pill fw-semibold" onclick="checkoutCart()">Finalizar Compra / Checkout</button>
+                    <button class="btn btn-outline-primary w-100 mt-2 rounded-pill fw-semibold" onclick="reserveCart()">Reservar por 24 horas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalTitle">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="accountModalTitle">Conta de cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="customerSessionPanel" class="d-none">
+                        <p id="customerIdentity" class="fw-semibold"></p>
+                        <p id="customerLocation" class="text-muted small"></p>
+                        <h6 class="fw-bold">As minhas preferências</h6>
+                        <div id="accountPreferenceList" class="row g-2 mb-3"></div>
+                        <button id="savePreferencesButton" class="btn btn-primary" type="button">Guardar preferências</button>
+                        <button id="customerLogoutButton" class="btn btn-outline-secondary ms-2" type="button">Terminar sessão</button>
+                        <p id="accountMessage" class="small mt-3 mb-0" role="status"></p>
+                        <hr>
+                        <h6 class="fw-bold">As minhas compras e reservas</h6>
+                        <div id="customerOrders" class="small text-muted">A carregar...</div>
+                    </div>
+                    <div id="customerAuthForms">
+                        <section id="customerLoginPanel">
+                            <h6 class="fw-bold">Entrar na minha conta</h6>
+                            <form id="customerLoginForm">
+                                <label class="form-label" for="customerLoginEmail">E-mail</label>
+                                <input id="customerLoginEmail" class="form-control mb-2" type="email" autocomplete="email" required>
+                                <label class="form-label" for="customerLoginPassword">Palavra-passe</label>
+                                <input id="customerLoginPassword" class="form-control mb-3" type="password" autocomplete="current-password" required>
+                                <button class="btn btn-dark w-100" type="submit">Entrar</button>
+                                <p id="customerLoginError" class="text-danger small mt-2" role="alert"></p>
+                            </form>
+                            <p class="text-center mt-3 mb-0">Ainda não tem conta?
+                                <button id="showRegisterButton" class="btn btn-link p-0 align-baseline" type="button">Criar uma conta</button>
+                            </p>
+                        </section>
+                        <section id="customerRegisterPanel" class="d-none">
+                            <h6 class="fw-bold">Criar conta</h6>
+                            <form id="customerRegisterForm">
+                                <div class="row g-2">
+                                    <div class="col-md-6"><label class="form-label" for="registerName">Nome</label><input id="registerName" class="form-control" maxlength="160" autocomplete="name" required></div>
+                                    <div class="col-md-6"><label class="form-label" for="registerEmail">E-mail</label><input id="registerEmail" class="form-control" type="email" maxlength="190" autocomplete="email" required></div>
+                                    <div class="col-md-6"><label class="form-label" for="registerPhone">Telefone</label><input id="registerPhone" class="form-control" type="tel" maxlength="30" autocomplete="tel"></div>
+                                    <div class="col-md-6"><label class="form-label" for="registerPassword">Palavra-passe (mín. 8 caracteres)</label><input id="registerPassword" class="form-control" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></div>
+                                    <div class="col-md-6"><label class="form-label" for="registerProvince">Província</label><select id="registerProvince" class="form-select" required></select></div>
+                                    <div class="col-md-6"><label class="form-label" for="registerMunicipality">Município</label><select id="registerMunicipality" class="form-select" required disabled><option value="">Selecione primeiro a província</option></select></div>
+                                </div>
+                                <label class="form-label fw-semibold mt-3">O que prefere ver?</label>
+                                <div id="registerPreferenceList" class="row g-1 mb-3"></div>
+                                <button class="btn btn-primary w-100" type="submit">Criar conta</button>
+                                <p id="customerRegisterError" class="text-danger small mt-2 mb-0" role="alert"></p>
+                            </form>
+                            <p class="text-center mt-3 mb-0">Já tem conta?
+                                <button id="showLoginButton" class="btn btn-link p-0 align-baseline" type="button">Entrar</button>
+                            </p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Favoritos (Gosto) -->
+    <div class="modal fade" id="wishlistModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-heart text-danger me-2"></i> Seus Favoritos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="wishlistItemsList" style="max-height: 300px; overflow-y: auto;">
+                        <!-- Favoritos injetados -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div class="toast-container notification-toast">
+        <div id="liveToast" class="toast align-items-center text-white bg-dark border-0 rounded-3 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage">
+                    Ação realizada com sucesso!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+            ? `${window.location.protocol}//${window.location.hostname}:3000`
+            : window.location.origin;
+        const customerTokenKey = 'apex_customer_token';
+
+        async function fetchCustomerApi(path, options) {
+            try {
+                return await fetch(`${API_URL}${path}`, options);
+            } catch (error) {
+                if (error instanceof TypeError) {
+                    throw new Error(`Não foi possível ligar à API em ${API_URL}. Inicie o servidor da API com "npm start" e confirme que a porta 3000 está disponível.`);
+                }
+                throw error;
+            }
+        }
+
+        let products = [];
+        let categories = [];
+        let customer = null;
+        let angolaLocations = [];
+        let cart = JSON.parse(localStorage.getItem('apex_cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('apex_wishlist')) || [];
+        let currentActiveCategory = 'Todos';
+        let currentModalProductId = null;
+
+        // Formato monetário em Kwanzas
+        function formatKZ(value) {
+            return Number(value).toLocaleString('pt-AO') + ' KZ';
+        }
+
+        // Navegação entre Seções
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('d-none'));
+            document.getElementById(`sec-${sectionId}`).classList.remove('d-none');
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => link.classList.remove('active'));
+
+            if (sectionId === 'catalog') renderProducts(products);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // RenderizarProdutos no Catálogo
+        function renderProducts(list, targetId = 'productGrid') {
+            const grid = document.getElementById(targetId);
+            grid.replaceChildren();
+            if (list.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'col-12 text-center py-5 text-muted';
+                empty.textContent = 'Nenhum produto encontrado.';
+                grid.append(empty);
+                return;
+            }
+
+            list.forEach(p => {
+                const isWishlisted = wishlist.some(item => Number(item.id) === Number(p.id));
+                const image = p.image_url || p.image || 'https://placehold.co/400x400/0f172a/ffffff?text=Produto';
+                const column = document.createElement('div');
+                column.className = 'col-md-4';
+                const card = document.createElement('div');
+                card.className = 'card product-card h-100 shadow-sm';
+                const imageWrap = document.createElement('div');
+                imageWrap.className = 'position-relative';
+                const productImage = document.createElement('img');
+                productImage.src = image;
+                productImage.alt = p.name;
+                productImage.className = 'card-img-top object-fit-cover';
+                productImage.style.height = '220px';
+                const favoriteButton = document.createElement('button');
+                favoriteButton.type = 'button';
+                favoriteButton.className = 'btn btn-light btn-sm position-absolute top-0 end-0 m-3 rounded-circle shadow-sm';
+                favoriteButton.setAttribute('aria-label', 'Adicionar ou remover dos favoritos');
+                const favoriteIcon = document.createElement('i');
+                favoriteIcon.className = `fa-solid fa-heart ${isWishlisted ? 'text-danger' : 'text-muted'}`;
+                favoriteButton.append(favoriteIcon);
+                favoriteButton.addEventListener('click', () => toggleWishlist(p.id));
+                imageWrap.append(productImage, favoriteButton);
+                const body = document.createElement('div');
+                body.className = 'card-body d-flex flex-column';
+                const category = document.createElement('span');
+                category.className = 'badge badge-category align-self-start mb-2';
+                category.textContent = p.category_name || p.category || 'Geral';
+                const name = document.createElement('h5');
+                name.className = 'card-title fw-bold mb-1';
+                name.textContent = p.name;
+                const price = document.createElement('p');
+                price.className = 'text-primary fw-bold fs-5 mb-3';
+                price.textContent = formatKZ(p.price);
+                const description = document.createElement('p');
+                description.className = 'text-muted small mb-2';
+                description.textContent = p.description || '';
+                const stock = document.createElement('small');
+                stock.className = p.stock > 0 ? 'text-success mb-3' : 'text-secondary mb-3';
+                stock.textContent = p.stock > 0 ? `${p.stock} em stock` : 'Esgotado';
+                const actions = document.createElement('div');
+                actions.className = 'mt-auto d-flex gap-2';
+                const detailsButton = document.createElement('button');
+                detailsButton.type = 'button';
+                detailsButton.className = 'btn btn-outline-dark w-50 rounded-pill btn-sm';
+                detailsButton.textContent = 'Detalhes';
+                detailsButton.addEventListener('click', () => openProductModal(p.id));
+                const buyButton = document.createElement('button');
+                buyButton.type = 'button';
+                buyButton.className = 'btn btn-primary w-50 rounded-pill btn-sm';
+                buyButton.textContent = 'Comprar';
+                buyButton.addEventListener('click', () => addToCart(p.id));
+                actions.append(detailsButton, buyButton);
+                body.append(category, name, description, price, stock, actions);
+                card.append(imageWrap, body);
+                column.append(card);
+                grid.append(column);
+            });
+        }
+
+        // Filtro por Categoria
+        function filterByCategory(cat) {
+            currentActiveCategory = cat;
+            
+            document.querySelectorAll('#categoryFilters button').forEach(btn => {
+                if (btn.innerText === cat || (cat === 'Todos' && btn.innerText === 'Todos')) {
+                    btn.classList.add('active', 'bg-dark', 'text-white');
+                    btn.classList.remove('badge-category');
+                } else {
+                    btn.classList.remove('active', 'bg-dark', 'text-white');
+                    btn.classList.add('badge-category');
+                }
+            });
+
+            if (document.getElementById('sec-catalog').classList.contains('d-none')) {
+                showSection('catalog');
+            }
+
+            if (cat === 'Todos') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => (p.category_name || p.category || '').toLowerCase() === cat.toLowerCase());
+                renderProducts(filtered);
+            }
+        }
+
+        // Pesquisa de Produtos
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p =>
+                p.name.toLowerCase().includes(query) ||
+                (p.description || '').toLowerCase().includes(query) ||
+                (p.category_name || p.category || '').toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        // Carrinho de Compras
+        function addToCart(id) {
+            const product = products.find(p => Number(p.id) === Number(id));
+            if (!product) return;
+            const existing = cart.find(item => Number(item.id) === Number(id));
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, image: product.image_url || product.image, qty: 1 });
+            }
+            updateCartStorage();
+            showToast(`"${product.name}" adicionado ao carrinho!`);
+        }
+
+        function updateCartStorage() {
+            localStorage.setItem('apex_cart', JSON.stringify(cart));
+            document.getElementById('cartCount').innerText = cart.reduce((acc, item) => acc + item.qty, 0);
+            renderCartModal();
+        }
+
+        function renderCartModal() {
+            const listContainer = document.getElementById('cartItemsList');
+            listContainer.replaceChildren();
+            let total = 0;
+
+            if (cart.length === 0) {
+                const empty = document.createElement('p');
+                empty.className = 'text-muted text-center py-4';
+                empty.textContent = 'Seu carrinho está vazio.';
+                listContainer.append(empty);
+                document.getElementById('cartTotalPrice').innerText = '0 KZ';
+                return;
+            }
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+                const row = document.createElement('div');
+                row.className = 'd-flex align-items-center justify-content-between mb-3 pb-2 border-bottom';
+                const product = document.createElement('div');
+                product.className = 'd-flex align-items-center gap-3';
+                const image = document.createElement('img');
+                image.src = item.image || item.image_url || 'https://placehold.co/80x80/e8ece7/18211f?text=AF';
+                image.alt = '';
+                image.className = 'rounded';
+                image.width = 50;
+                image.height = 50;
+                image.style.objectFit = 'cover';
+                const details = document.createElement('div');
+                const name = document.createElement('h6');
+                name.className = 'fw-bold mb-0';
+                name.textContent = item.name;
+                const price = document.createElement('small');
+                price.className = 'text-muted';
+                price.textContent = `${formatKZ(item.price)} x ${item.qty}`;
+                details.append(name, price);
+                product.append(image, details);
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn btn-outline-danger btn-sm rounded-circle';
+                removeButton.setAttribute('aria-label', 'Remover produto do carrinho');
+                const removeIcon = document.createElement('i');
+                removeIcon.className = 'fa-solid fa-trash';
+                removeButton.append(removeIcon);
+                removeButton.addEventListener('click', () => removeFromCart(item.id));
+                row.append(product, removeButton);
+                listContainer.append(row);
+            });
+            document.getElementById('cartTotalPrice').innerText = formatKZ(total);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartStorage();
+        }
+
+        async function checkoutCart() {
+            if (cart.length === 0) {
+                showToast('Adicione itens ao carrinho antes de finalizar!');
+                return;
+            }
+            if (!customer || !sessionStorage.getItem(customerTokenKey)) {
+                showToast('Crie uma conta ou inicie sessão para comprar.');
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('accountModal')).show();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/orders`, {
+                    method: 'POST',
+                    headers: customerHeaders(),
+                    body: JSON.stringify({
+                        items: cart.map(item => ({ productId: item.id, quantity: item.qty })),
+                        deliveryAddress: {},
+                        paymentMethod: 'EMIS'
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível criar o pedido');
+                const paymentResponse = await fetch(`${API_URL}/api/orders/${result.order.id}/payments`, { method: 'POST', headers: customerHeaders() });
+                const paymentResult = await paymentResponse.json();
+                if (!paymentResponse.ok) throw new Error(paymentResult.message || 'Não foi possível iniciar o pagamento');
+                if (paymentResult.payment.redirectUrl) {
+                    window.location.assign(paymentResult.payment.redirectUrl);
+                    return;
+                }
+                showToast(`Pedido ${result.order.orderNumber} criado. Acompanhe-o na sua conta.`);
+                cart = [];
+                updateCartStorage();
+                bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        async function reserveCart() {
+            if (!cart.length) {
+                showToast('Adicione produtos ao carrinho antes de reservar.');
+                return;
+            }
+            if (!customer || !sessionStorage.getItem(customerTokenKey)) {
+                showToast('Crie uma conta ou inicie sessão para reservar produtos.');
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('accountModal')).show();
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/api/orders/reservations`, {
+                    method: 'POST',
+                    headers: customerHeaders(),
+                    body: JSON.stringify({ items: cart.map(item => ({ productId: item.id, quantity: item.qty })) })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível reservar os produtos');
+                cart = [];
+                updateCartStorage();
+                bootstrap.Modal.getInstance(document.getElementById('cartModal'))?.hide();
+                showToast(`Reserva ${result.reservation.orderNumber} válida por 24 horas.`);
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        function customerHeaders() {
+            return {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem(customerTokenKey) || ''}`
+            };
+        }
+
+        function renderPreferenceOptions(targetId, selected = []) {
+            const container = document.getElementById(targetId);
+            container.replaceChildren();
+            if (!categories.length) {
+                const message = document.createElement('p');
+                message.className = 'text-muted small mb-2';
+                message.textContent = 'Ainda não existem categorias disponíveis para selecionar.';
+                container.append(message);
+                return;
+            }
+            categories.forEach(category => {
+                const col = document.createElement('div');
+                col.className = 'col-6 col-md-4';
+                const label = document.createElement('label');
+                label.className = 'form-check small';
+                const input = document.createElement('input');
+                input.className = 'form-check-input preference-option';
+                input.type = 'checkbox';
+                input.value = category.id;
+                input.checked = selected.includes(Number(category.id));
+                const text = document.createElement('span');
+                text.className = 'form-check-label';
+                text.textContent = category.name;
+                label.append(input, text);
+                col.append(label);
+                container.append(col);
+            });
+        }
+
+        function selectedPreferences(targetId) {
+            return [...document.querySelectorAll(`#${targetId} .preference-option:checked`)].map(input => Number(input.value));
+        }
+
+        function updateCustomerSession(nextCustomer) {
+            customer = nextCustomer;
+            document.getElementById('accountButtonLabel').textContent = customer ? customer.name : 'Entrar';
+            document.getElementById('customerSessionPanel').classList.toggle('d-none', !customer);
+            document.getElementById('customerAuthForms').classList.toggle('d-none', Boolean(customer));
+            if (!customer) showCustomerAuthMode('login');
+            if (!customer) return;
+            document.getElementById('customerIdentity').textContent = `${customer.name} · ${customer.email}`;
+            document.getElementById('customerLocation').textContent = [customer.municipality, customer.province].filter(Boolean).join(', ');
+            renderPreferenceOptions('accountPreferenceList', (customer.preferences || []).map(item => Number(item.id)));
+            loadRecommendations();
+            loadCustomerOrders();
+        }
+
+        async function loadCustomerOrders() {
+            const container = document.getElementById('customerOrders');
+            try {
+                const response = await fetch(`${API_URL}/api/customers/orders`, { headers: customerHeaders() });
+                const orders = await response.json();
+                if (!response.ok) throw new Error(orders.message || 'Não foi possível carregar as encomendas');
+                container.replaceChildren();
+                if (!orders.length) {
+                    container.textContent = 'Ainda não há compras ou reservas.';
+                    return;
+                }
+                orders.forEach(order => {
+                    const item = document.createElement('div');
+                    item.className = 'border-bottom py-2';
+                    const reference = document.createElement('strong');
+                    reference.textContent = `${order.order_number} · ${order.order_type === 'RESERVATION' ? 'Reserva' : 'Compra'} · ${order.status}`;
+                    const details = document.createElement('div');
+                    details.textContent = `${(order.items || []).map(product => `${product.product_name} × ${product.quantity}`).join(', ')} · ${formatKZ(order.total)}`;
+                    item.append(reference, details);
+                    if (order.reservation_expires_at && order.status === 'RESERVED') {
+                        const expiry = document.createElement('small');
+                        expiry.className = 'text-muted';
+                        expiry.textContent = `Válida até ${new Date(order.reservation_expires_at).toLocaleString('pt-AO')}`;
+                        item.append(expiry);
+                    }
+                    container.append(item);
+                });
+            } catch (error) {
+                container.textContent = error.message;
+            }
+        }
+
+        async function loadCustomerLocations() {
+            const provinceSelect = document.getElementById('registerProvince');
+            try {
+                const locationsUrl = new URL('db/seeds/angola-locations.json', window.location.href);
+                const response = await fetch(locationsUrl);
+                if (!response.ok) throw new Error('Não foi possível carregar a lista local de províncias e municípios');
+                const data = await response.json();
+                if (!Array.isArray(data.provinces) || !data.provinces.length) {
+                    throw new Error('A lista local de províncias e municípios está vazia ou inválida');
+                }
+                angolaLocations = data.provinces;
+                provinceSelect.replaceChildren(new Option('Selecione a província', ''));
+                angolaLocations.forEach(province => provinceSelect.add(new Option(province.name, province.name)));
+                provinceSelect.disabled = false;
+            } catch (error) {
+                provinceSelect.replaceChildren(new Option('Não foi possível carregar', ''));
+                provinceSelect.disabled = true;
+                showToast(error.message);
+            }
+        }
+
+        function loadMunicipalities(provinceName) {
+            const municipalitySelect = document.getElementById('registerMunicipality');
+            municipalitySelect.disabled = true;
+            municipalitySelect.replaceChildren(new Option(
+                provinceName ? 'Selecione o município' : 'Selecione primeiro a província',
+                ''
+            ));
+            const province = angolaLocations.find(item => item.name === provinceName);
+            if (!province || !Array.isArray(province.municipalities) || !province.municipalities.length) return;
+            province.municipalities.forEach(municipality => {
+                municipalitySelect.add(new Option(municipality, municipality));
+            });
+            municipalitySelect.disabled = false;
+        }
+
+        function showCustomerAuthMode(mode) {
+            const registering = mode === 'register';
+            document.getElementById('customerLoginPanel').classList.toggle('d-none', registering);
+            document.getElementById('customerRegisterPanel').classList.toggle('d-none', !registering);
+        }
+
+        document.getElementById('showRegisterButton').addEventListener('click', () => {
+            showCustomerAuthMode('register');
+        });
+        document.getElementById('showLoginButton').addEventListener('click', () => {
+            showCustomerAuthMode('login');
+        });
+        document.getElementById('accountModal').addEventListener('show.bs.modal', () => {
+            if (!customer) showCustomerAuthMode('login');
+        });
+        document.getElementById('registerProvince').addEventListener('change', event => {
+            loadMunicipalities(event.target.value);
+        });
+
+        async function loadRecommendations() {
+            if (!sessionStorage.getItem(customerTokenKey)) return;
+            try {
+                const response = await fetch(`${API_URL}/api/customers/recommendations`, { headers: customerHeaders() });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível carregar recomendações');
+                document.getElementById('recommendationMessage').textContent = `${result.message} ${result.source === 'ai' ? 'Personalizado com IA.' : 'Sugestões por preferências.'}`;
+                document.getElementById('recommendationsPanel').classList.toggle('d-none', !result.rows.length);
+                renderProducts(result.rows, 'recommendationGrid');
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        async function loadAdvertisements() {
+            try {
+                const response = await fetch(`${API_URL}/api/advertisements`);
+                const ads = await response.json();
+                if (!response.ok) throw new Error(ads.message || 'Não foi possível carregar publicidades');
+                const grid = document.getElementById('advertisementGrid');
+                grid.replaceChildren();
+                ads.forEach(ad => {
+                    const column = document.createElement('div');
+                    column.className = 'col-sm-6 col-lg-4';
+                    const card = document.createElement('article');
+                    card.className = 'card border-0 shadow-sm h-100';
+                    const image = document.createElement('img');
+                    image.src = ad.image_url;
+                    image.alt = ad.title;
+                    image.className = 'card-img-top object-fit-cover';
+                    image.style.height = '180px';
+                    const body = document.createElement('div');
+                    body.className = 'card-body';
+                    const company = document.createElement('small');
+                    company.className = 'text-muted';
+                    company.textContent = ad.company_name;
+                    const title = document.createElement('h3');
+                    title.className = 'h6 fw-bold mt-1';
+                    title.textContent = ad.title;
+                    const description = document.createElement('p');
+                    description.className = 'small mb-0';
+                    description.textContent = ad.description || '';
+                    body.append(company, title, description);
+                    if (ad.target_url) {
+                        const link = document.createElement('a');
+                        link.href = ad.target_url;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer sponsored';
+                        link.className = 'stretched-link';
+                        link.setAttribute('aria-label', `Visitar ${ad.company_name}`);
+                        body.append(link);
+                    }
+                    card.append(image, body);
+                    column.append(card);
+                    grid.append(column);
+                });
+                document.getElementById('advertisementPanel').classList.toggle('d-none', !ads.length);
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        document.getElementById('customerLoginForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            const errorLabel = document.getElementById('customerLoginError');
+            errorLabel.textContent = '';
+            try {
+                const response = await fetchCustomerApi('/api/customers/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('customerLoginEmail').value,
+                        password: document.getElementById('customerLoginPassword').value
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível iniciar sessão');
+                sessionStorage.setItem(customerTokenKey, result.token);
+                updateCustomerSession(result.customer);
+                document.getElementById('customerLoginPassword').value = '';
+                showToast(`Bem-vindo, ${result.customer.name}.`);
+            } catch (error) {
+                errorLabel.textContent = error.message;
+            }
+        });
+
+        document.getElementById('customerRegisterForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            const errorLabel = document.getElementById('customerRegisterError');
+            errorLabel.textContent = '';
+            try {
+                const response = await fetchCustomerApi('/api/customers/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('registerName').value,
+                        email: document.getElementById('registerEmail').value,
+                        phone: document.getElementById('registerPhone').value,
+                        password: document.getElementById('registerPassword').value,
+                        province: document.getElementById('registerProvince').value,
+                        municipality: document.getElementById('registerMunicipality').value,
+                        preferenceIds: selectedPreferences('registerPreferenceList')
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível criar a conta');
+                sessionStorage.setItem(customerTokenKey, result.token);
+                updateCustomerSession(result.customer);
+                document.getElementById('customerRegisterForm').reset();
+                showToast('Conta criada com sucesso.');
+            } catch (error) {
+                errorLabel.textContent = error.message;
+            }
+        });
+
+        document.getElementById('savePreferencesButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/customers/preferences`, {
+                    method: 'PUT',
+                    headers: customerHeaders(),
+                    body: JSON.stringify({ preferenceIds: selectedPreferences('accountPreferenceList') })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível guardar as preferências');
+                customer.preferences = categories.filter(category => selectedPreferences('accountPreferenceList').includes(Number(category.id)));
+                await loadRecommendations();
+                document.getElementById('accountMessage').textContent = result.message;
+            } catch (error) {
+                document.getElementById('accountMessage').textContent = error.message;
+            }
+        });
+
+        document.getElementById('customerLogoutButton').addEventListener('click', () => {
+            sessionStorage.removeItem(customerTokenKey);
+            document.getElementById('recommendationsPanel').classList.add('d-none');
+            updateCustomerSession(null);
+        });
+
+        // Favoritos (Gosto)
+        function toggleWishlist(id) {
+            const product = products.find(p => Number(p.id) === Number(id));
+            if (!product) return;
+            const index = wishlist.findIndex(item => Number(item.id) === Number(id));
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast(`Removido dos favoritos.`);
+            } else {
+                wishlist.push(product);
+                showToast(`Adicionado aos favoritos!`);
+            }
+            localStorage.setItem('apex_wishlist', JSON.stringify(wishlist));
+            document.getElementById('wishlistCount').innerText = wishlist.length;
+            renderWishlistModal();
+            if(!document.getElementById('sec-catalog').classList.contains('d-none')) {
+                renderProducts(currentActiveCategory === 'Todos' ? products : products.filter(p => p.category === currentActiveCategory));
+            }
+        }
+
+        function renderWishlistModal() {
+            const list = document.getElementById('wishlistItemsList');
+            list.replaceChildren();
+            if (wishlist.length === 0) {
+                const empty = document.createElement('p');
+                empty.className = 'text-muted text-center py-4';
+                empty.textContent = 'Nenhum produto nos favoritos.';
+                list.append(empty);
+                return;
+            }
+            wishlist.forEach(p => {
+                const row = document.createElement('div');
+                row.className = 'd-flex align-items-center justify-content-between mb-3 pb-2 border-bottom';
+                const product = document.createElement('div');
+                product.className = 'd-flex align-items-center gap-3';
+                const image = document.createElement('img');
+                image.src = p.image || p.image_url || 'https://placehold.co/80x80/e8ece7/18211f?text=AF';
+                image.alt = '';
+                image.className = 'rounded';
+                image.width = 50;
+                image.height = 50;
+                image.style.objectFit = 'cover';
+                const details = document.createElement('div');
+                const name = document.createElement('h6');
+                name.className = 'fw-bold mb-0';
+                name.textContent = p.name;
+                const price = document.createElement('small');
+                price.className = 'text-primary fw-bold';
+                price.textContent = formatKZ(p.price);
+                details.append(name, price);
+                product.append(image, details);
+                const buyButton = document.createElement('button');
+                buyButton.type = 'button';
+                buyButton.className = 'btn btn-primary btn-sm rounded-pill';
+                buyButton.textContent = 'Comprar';
+                buyButton.addEventListener('click', () => {
+                    addToCart(p.id);
+                    toggleWishlist(p.id);
+                });
+                row.append(product, buyButton);
+                list.append(row);
+            });
+        }
+
+        // Modal de Detalhes & Comentários
+        async function openProductModal(id) {
+            currentModalProductId = id;
+            const p = products.find(item => Number(item.id) === Number(id));
+            if (!p) return;
+            document.getElementById('modalProductName').innerText = p.name;
+            document.getElementById('modalProductTitle').innerText = p.name;
+            document.getElementById('modalProductCategory').innerText = p.category_name || p.category || 'Geral';
+            document.getElementById('modalProductPrice').innerText = formatKZ(p.price);
+            const stock = Number(p.stock || 0);
+            document.getElementById('modalProductStock').innerText = stock > 0 ? `${stock} unidade(s) disponível(eis)` : 'Produto esgotado';
+            document.getElementById('modalProductStock').className = stock > 0 ? 'small fw-semibold text-success mb-2' : 'small fw-semibold text-secondary mb-2';
+            document.getElementById('modalProductDesc').innerText = p.description || p.desc || '';
+            document.getElementById('modalProductImg').src = p.image_url || p.image || 'https://placehold.co/400x400/0f172a/ffffff?text=Produto';
+            document.getElementById('modalAddToCartBtn').onclick = () => {
+                addToCart(p.id);
+                bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+            };
+            await loadReviews(p.id);
+            const myModal = new bootstrap.Modal(document.getElementById('productModal'));
+            myModal.show();
+        }
+
+        async function loadReviews(productId) {
+            const response = await fetch(`${API_URL}/api/products/${productId}/reviews`);
+            const reviews = await response.json();
+            renderComments(reviews);
+        }
+
+        function renderComments(reviews) {
+            const container = document.getElementById('commentsList');
+            container.replaceChildren();
+            if (reviews.length === 0) {
+                const empty = document.createElement('p');
+                empty.className = 'text-muted small';
+                empty.textContent = 'Nenhum comentário ainda. Seja o primeiro!';
+                container.append(empty);
+                return;
+            }
+            reviews.forEach(review => {
+                const comment = document.createElement('div');
+                comment.className = 'p-2 bg-light rounded mb-2 small';
+                comment.textContent = review.comment;
+                container.append(comment);
+            });
+        }
+
+        async function addComment() {
+            const input = document.getElementById('newCommentInput');
+            const text = input.value.trim();
+            if (!text || !currentModalProductId) return;
+            if (!customer || !sessionStorage.getItem(customerTokenKey)) {
+                showToast('Faça login para publicar uma avaliação.');
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('accountModal')).show();
+                return;
+            }
+            const response = await fetch(`${API_URL}/api/reviews`, {
+                method: 'POST',
+                headers: customerHeaders(),
+                body: JSON.stringify({ productId: currentModalProductId, rating: 5, comment: text })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Não foi possível publicar o comentário');
+            input.value = '';
+            await loadReviews(currentModalProductId);
+            showToast('Comentário enviado para aprovação.');
+        }
+
+        // Formulário de Contato
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMsg').value;
+            try {
+                const response = await fetch(`${API_URL}/api/contact`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, subject, message })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível enviar a mensagem');
+                showToast(result.message || 'Mensagem enviada com sucesso! Retornaremos em breve.');
+                document.getElementById('contactForm').reset();
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        // Notificações Toast
+        function showToast(msg) {
+            document.getElementById('toastMessage').innerText = msg;
+            const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            toast.show();
+        }
+
+        async function loadProducts(categoryId = null) {
+            const limit = 100;
+            const fetchPage = async page => {
+                const params = new URLSearchParams({ limit: String(limit), page: String(page) });
+                if (categoryId) params.set('categoryId', categoryId);
+                const response = await fetch(`${API_URL}/api/products?${params}`);
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Não foi possível carregar os produtos');
+                return result;
+            };
+            const firstPage = await fetchPage(1);
+            const allProducts = [...firstPage.rows];
+            const pageCount = Math.ceil(Number(firstPage.total) / limit);
+            for (let firstPageNumber = 2; firstPageNumber <= pageCount; firstPageNumber += 4) {
+                const pageNumbers = Array.from(
+                    { length: Math.min(4, pageCount - firstPageNumber + 1) },
+                    (_value, index) => firstPageNumber + index
+                );
+                const pageResults = await Promise.all(pageNumbers.map(fetchPage));
+                pageResults.forEach(result => allProducts.push(...result.rows));
+            }
+            if (allProducts.length !== Number(firstPage.total)) {
+                throw new Error('O catálogo mudou durante o carregamento. Atualize a página para ver todos os produtos.');
+            }
+            products = allProducts;
+            document.getElementById('catalogHeading').textContent = `Catálogo de Produtos (${products.length})`;
+            renderProducts(products);
+        }
+
+        async function loadCategories() {
+            const response = await fetch(`${API_URL}/api/categories`);
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Não foi possível carregar as categorias');
+            categories = result;
+            renderPreferenceOptions('registerPreferenceList');
+            const filters = document.getElementById('categoryFilters');
+            filters.replaceChildren();
+            const allButton = document.createElement('button');
+            allButton.type = 'button';
+            allButton.className = 'btn badge-category active rounded-pill px-3 py-2';
+            allButton.textContent = 'Todos';
+            allButton.addEventListener('click', () => filterByCategory('Todos'));
+            filters.append(allButton);
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'btn badge-category rounded-pill px-3 py-2';
+                button.textContent = category.name;
+                button.addEventListener('click', () => filterByCategory(category.name, category.id));
+                filters.append(button);
+            });
+        }
+
+        // Inicialização ao carregar a página
+        window.onload = async function() {
+            updateCartStorage();
+            document.getElementById('wishlistCount').innerText = wishlist.length;
+            renderWishlistModal();
+            if (window.location.protocol === 'file:') {
+                showToast('Abra a loja pelo XAMPP, por exemplo em http://localhost/E-commerce/, para carregar os dados da API.');
+                return;
+            }
+            const requestedSection = new URLSearchParams(window.location.search).get('section');
+            if (['home', 'catalog', 'about', 'contact'].includes(requestedSection)) {
+                showSection(requestedSection);
+            }
+            try {
+                await Promise.all([loadProducts(), loadCategories(), loadCustomerLocations(), loadAdvertisements()]);
+                const token = sessionStorage.getItem(customerTokenKey);
+                if (token) {
+                    const response = await fetch(`${API_URL}/api/customers/session`, { headers: customerHeaders() });
+                    const result = await response.json();
+                    if (response.ok) updateCustomerSession(result.customer);
+                    else sessionStorage.removeItem(customerTokenKey);
+                }
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+    </script>
+</body>
+</html>

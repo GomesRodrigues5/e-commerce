@@ -1,0 +1,33 @@
+{
+  "name": "apexfit-commerce-api",
+  "version": "1.0.0",
+  "description": "API de comércio eletrônico da ApexFit com integração EMIS",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test",
+    "lint": "node --check server.js && node --check src/app.js && node --check src/routes/admin.js && node --check src/routes/advertisements.js && node --check src/routes/categories.js && node --check src/routes/contact.js && node --check src/routes/customers.js && node --check src/routes/dashboard.js && node --check src/routes/orders.js && node --check src/routes/products.js && node --check src/routes/reviews.js && node --check src/routes/uploads.js && node --check src/services/emis.js && node --check src/services/angolaLocations.js && node --check src/services/recommendationsAI.js && node --check src/repositories/commerceRepository.js && node --check src/middleware/adminAuth.js && node --check src/middleware/customerAuth.js && node --check scripts/migrate.js && node --check admin.js",
+    "db:init": "mysql -u root -p < db/schema.sql",
+    "db:migrate": "node scripts/migrate.js",
+    "db:admin:create": "node scripts/create-admin.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "multer": "^2.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.0",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.0"
+  }
+}

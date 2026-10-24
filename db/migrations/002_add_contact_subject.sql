@@ -1,0 +1,2 @@
+ALTER TABLE contact_messages
+  ADD COLUMN subject VARCHAR(200) NOT NULL DEFAULT '' AFTER email;
