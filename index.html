@@ -77,6 +77,176 @@
             background-color: #0f172a;
             color: #ffffff;
         }
+        .category-section {
+            padding: 1rem 0 4rem;
+        }
+        .section-eyebrow {
+            color: #0f766e;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .category-card {
+            position: relative;
+            display: flex;
+            width: 100%;
+            min-height: 390px;
+            overflow: hidden;
+            align-items: flex-end;
+            padding: 0;
+            border: 0;
+            border-radius: 1.5rem;
+            background: #0f172a;
+            color: #fff;
+            text-align: left;
+            isolation: isolate;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-card:hover,
+        .category-card:focus-visible {
+            transform: translateY(-8px);
+            box-shadow: 0 26px 50px rgba(15, 23, 42, 0.24);
+        }
+        .category-card:focus-visible {
+            outline: 3px solid #14b8a6;
+            outline-offset: 4px;
+        }
+        .category-card img {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .category-card-motion img {
+            animation: athlete-image-motion 8s ease-in-out infinite;
+            will-change: transform;
+        }
+        @keyframes athlete-image-motion {
+            0%, 100% {
+                transform: scale(1.04) translate3d(0, 0, 0);
+            }
+            35% {
+                transform: scale(1.1) translate3d(-1.2%, -0.6%, 0);
+            }
+            70% {
+                transform: scale(1.07) translate3d(1%, 0.5%, 0);
+            }
+        }
+        .category-card:hover img,
+        .category-card:focus-visible img {
+            transform: scale(1.06);
+        }
+        .category-card-motion:hover img,
+        .category-card-motion:focus-visible img {
+            animation-play-state: paused;
+            transform: scale(1.1);
+        }
+        .category-card::after {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.02) 18%, rgba(15, 23, 42, 0.25) 48%, rgba(15, 23, 42, 0.92) 100%);
+            content: "";
+        }
+        .category-card-content {
+            width: 100%;
+            padding: 2rem;
+        }
+        .category-card-kicker {
+            color: #99f6e4;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .category-card h3 {
+            margin: 0.45rem 0;
+            font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+            font-weight: 800;
+        }
+        .category-card p {
+            max-width: 22rem;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.82);
+        }
+        .category-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin-top: 1.25rem;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .about-section {
+            padding: 5rem 0;
+            background: #fff;
+        }
+        .about-image {
+            width: 100%;
+            min-height: 370px;
+            object-fit: cover;
+            object-position: center;
+        }
+        .contact-section {
+            padding: 5rem 0;
+            background: #f1f5f9;
+        }
+        .contact-info-card {
+            background: #0f172a;
+            color: #fff;
+        }
+        .contact-info-card p {
+            color: #cbd5e1;
+        }
+        .contact-info-icon {
+            display: grid;
+            width: 2.75rem;
+            height: 2.75rem;
+            flex: 0 0 2.75rem;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(45, 212, 191, 0.14);
+            color: #5eead4;
+        }
+        .site-footer {
+            background: #0b1120;
+            color: #cbd5e1;
+        }
+        .site-footer-brand {
+            width: 190px;
+            height: 62px;
+            object-fit: contain;
+            object-position: left center;
+        }
+        .site-footer-title {
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .site-footer-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .site-footer-link:hover,
+        .site-footer-link:focus-visible {
+            color: #5eead4;
+        }
+        .site-footer-bottom {
+            border-top: 1px solid rgba(203, 213, 225, 0.16);
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
         .notification-toast {
             position: fixed;
             bottom: 20px;
@@ -92,6 +262,17 @@
             .navbar-logo {
                 width: 175px;
                 height: 58px;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .category-card-motion img {
+                animation: none;
+                transform: none;
+                will-change: auto;
+            }
+            .category-card-motion:hover img,
+            .category-card-motion:focus-visible img {
+                transform: none;
             }
         }
     </style>
@@ -111,16 +292,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto align-items-lg-center gap-lg-3">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium active" href="#" onclick="showSection('home')">Início</a>
+                        <a class="nav-link fw-medium active" href="#" data-section="home" onclick="showSection('home'); return false;">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="#" onclick="showSection('catalog')">Produtos</a>
+                        <a class="nav-link fw-medium" href="#" data-section="catalog" onclick="showSection('catalog'); return false;">Produtos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="#" onclick="showSection('about')">Sobre Nós</a>
+                        <a class="nav-link fw-medium" href="#" data-section="about" onclick="showSection('about'); return false;">Sobre Nós</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="#" onclick="showSection('contact')">Contato</a>
+                        <a class="nav-link fw-medium" href="#" data-section="contact" onclick="showSection('contact'); return false;">Contato</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
@@ -169,50 +350,142 @@
             </div>
 
             <!-- Destaques por Categoria -->
-            <div class="container mb-5">
+            <div class="container category-section">
                 <div class="text-center mb-5">
-                    <h2 class="fw-bold">Categorias Principais</h2>
-                    <p class="text-muted">Encontre tudo o que precisa para o seu treino diário</p>
+                    <span class="section-eyebrow">Encontre o seu ritmo</span>
+                    <h2 class="display-6 fw-bold mt-2">Escolha a sua categoria</h2>
+                    <p class="text-muted mb-0">Equipamento e estilo para cada objetivo, dentro e fora do treino.</p>
                 </div>
                 <div class="row g-4">
                     <div class="col-md-4">
-                        <div class="card product-card text-white text-center p-4 bg-dark border-0 h-100" style="cursor: pointer;" onclick="filterByCategory('Mulheres')">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <i class="fa-solid fa-person-dress fa-3x mb-3 text-primary"></i>
-                                <h3>Mulheres</h3>
-                                <p class="text-muted small">Leggings, Tops e Conjuntos Estilosos</p>
-                            </div>
-                        </div>
-                        <div id="advertisementPanel" class="container mb-5 d-none">
-                            <h2 class="h4 fw-bold mb-3">Parceiros e novidades</h2>
-                            <div id="advertisementGrid" class="row g-3"></div>
-                        </div>
-                        <div id="recommendationsPanel" class="container mb-5 d-none">
-                            <h2 class="h4 fw-bold mb-1">Recomendado para si</h2>
-                            <p id="recommendationMessage" class="text-muted small mb-3"></p>
-                            <div id="recommendationGrid" class="row g-3"></div>
-                        </div>
+                        <button type="button" class="category-card category-card-motion" onclick="filterByCategory('Homens')">
+                            <img src="src/img/homem-musculoso-posando-em-camiseta-preta_600776-34706.avif" alt="Atleta a treinar com roupa fitness masculina">
+                            <span class="category-card-content">
+                                <span class="category-card-kicker">Performance masculina</span>
+                                <h3>Homem</h3>
+                                <p>Camisetas Dry-Fit, bermudas e peças prontas para superar limites.</p>
+                                <span class="category-card-link">Explorar coleção <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                            </span>
+                        </button>
                     </div>
                     <div class="col-md-4">
-                        <div class="card product-card text-white text-center p-4 bg-dark border-0 h-100" style="cursor: pointer;" onclick="filterByCategory('Homens')">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <i class="fa-solid fa-person fa-3x mb-3 text-primary"></i>
-                                <h3>Homens</h3>
-                                <p class="text-muted small">Camisetas Dry-Fit, Bermudas e Regatas</p>
-                            </div>
-                        </div>
+                        <button type="button" class="category-card" onclick="filterByCategory('Mulheres')">
+                            <img src="src/img/mulher.avif" alt="Atleta a treinar com roupa fitness feminina">
+                            <span class="category-card-content">
+                                <span class="category-card-kicker">Estilo em movimento</span>
+                                <h3>Mulher</h3>
+                                <p>Leggings, tops e conjuntos confortáveis para treinar com confiança.</p>
+                                <span class="category-card-link">Explorar coleção <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                            </span>
+                        </button>
                     </div>
                     <div class="col-md-4">
-                        <div class="card product-card text-white text-center p-4 bg-dark border-0 h-100" style="cursor: pointer;" onclick="filterByCategory('Pesos')">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <i class="fa-solid fa-dumbbell fa-3x mb-3 text-primary"></i>
+                        <button type="button" class="category-card" onclick="filterByCategory('Pesos')">
+                            <img src="src/img/peso.avif" alt="Pesos e equipamento profissional de musculação">
+                            <span class="category-card-content">
+                                <span class="category-card-kicker">Força e resistência</span>
                                 <h3>Pesos</h3>
-                                <p class="text-muted small">Halteres, Anilhas e Barras Profissionais</p>
+                                <p>Halteres, anilhas e barras profissionais para evoluir a cada série.</p>
+                                <span class="category-card-link">Explorar equipamentos <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="advertisementPanel" class="container mb-5 d-none">
+                <h2 class="h4 fw-bold mb-3">Parceiros e novidades</h2>
+                <div id="advertisementGrid" class="row g-3"></div>
+            </div>
+            <div id="recommendationsPanel" class="container mb-5 d-none">
+                <h2 class="h4 fw-bold mb-1">Recomendado para si</h2>
+                <p id="recommendationMessage" class="text-muted small mb-3"></p>
+                <div id="recommendationGrid" class="row g-3"></div>
+            </div>
+
+            <!-- SECTION: ABOUT -->
+            <section id="sec-about" class="about-section">
+                <div class="container">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-6">
+                            <img src="src/img/fundo1.jpg" alt="Treino e estilo de vida ApexFit" class="about-image rounded-4 shadow-sm">
+                        </div>
+                        <div class="col-lg-6">
+                            <span class="section-eyebrow">Nossa história</span>
+                            <h2 class="display-6 fw-bold mt-2 mb-4">Comprometidos com a sua evolução física e mental</h2>
+                            <p class="text-muted mb-3">Fundada por entusiastas do fitness e atletas profissionais, a ApexFit nasceu com o propósito de fornecer roupas e equipamentos de alta durabilidade e design ergonômico para quem não aceita desculpas.</p>
+                            <p class="text-muted mb-4">Trabalhamos com tecidos tecnológicos respiráveis que acompanham cada movimento do seu corpo e equipamentos rigorosamente testados para garantir segurança máxima nos treinos intensos.</p>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded-3 border">
+                                        <h3 class="fw-bold text-primary mb-1">+15k</h3>
+                                        <p class="text-muted mb-0 small">Atletas satisfeitos</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-light rounded-3 border">
+                                        <h3 class="fw-bold text-primary mb-1">100%</h3>
+                                        <p class="text-muted mb-0 small">Garantia de qualidade</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- SECTION: CONTACT -->
+            <section id="sec-contact" class="contact-section">
+                <div class="container">
+                    <div class="row align-items-stretch g-4">
+                        <div class="col-lg-5">
+                            <div class="contact-info-card rounded-4 p-4 p-md-5 h-100">
+                                <span class="section-eyebrow">Estamos aqui para ajudar</span>
+                                <h2 class="display-6 fw-bold mt-2 mb-3">Vamos conversar?</h2>
+                                <p class="mb-4">Tem dúvidas sobre produtos, pedidos ou entregas? Envie-nos uma mensagem e a nossa equipa entrará em contacto.</p>
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <span class="contact-info-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
+                                    <div><span class="d-block small text-white-50">E-mail</span><span class="fw-semibold">Fale com a nossa equipa</span></div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="contact-info-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+                                    <div><span class="d-block small text-white-50">Atendimento</span><span class="fw-semibold">Respondemos assim que possível</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 h-100 bg-white">
+                                <div class="mb-4">
+                                    <h3 class="h4 fw-bold">Fale Conosco</h3>
+                                    <p class="text-muted mb-0">Preencha o formulário e conte-nos como podemos ajudar.</p>
+                                </div>
+                                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-medium" for="contactName">Nome completo</label>
+                                            <input type="text" class="form-control" id="contactName" required placeholder="Seu nome">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-medium" for="contactEmail">E-mail</label>
+                                            <input type="email" class="form-control" id="contactEmail" required placeholder="seu@email.com">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-medium" for="contactSubject">Assunto</label>
+                                            <input type="text" class="form-control" id="contactSubject" maxlength="200" required placeholder="Sobre o que deseja falar?">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-medium" for="contactMsg">Mensagem</label>
+                                            <textarea class="form-control" id="contactMsg" rows="4" required placeholder="Como podemos ajudar?"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary px-4 py-3 rounded-pill fw-semibold">Enviar mensagem <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </section>
 
         <!-- SECTION: CATALOG -->
@@ -248,73 +521,38 @@
             </div>
         </section>
 
-        <!-- SECTION: ABOUT -->
-        <section id="sec-about" class="content-section d-none py-5">
-            <div class="container">
-                <div class="row align-items-center g-5">
-                    <div class="col-lg-6">
-                        <img src="https://placehold.co/600x500/0f172a/ffffff?text=Sobre+ApexFit" alt="Sobre Nós" class="img-fluid rounded-4 shadow-sm">
-                    </div>
-                    <div class="col-lg-6">
-                        <span class="badge bg-primary bg-opacity-25 text-primary px-3 py-2 rounded-pill fw-semibold mb-3">NOSSA HISTÓRIA</span>
-                        <h2 class="fw-bold mb-4">Comprometidos com a sua Evolução Física e Mental</h2>
-                        <p class="text-muted mb-3">Fundada por entusiastas do fitness e atletas profissionais, a ApexFit nasceu com o propósito de fornecer roupas e equipamentos de alta durabilidade e design ergonômico para quem não aceita desculpas.</p>
-                        <p class="text-muted mb-4">Trabalhamos com tecidos tecnológicos respiráveis que acompanham cada movimento do seu corpo e equipamentos rigorosamente testados para garantir segurança máxima nos treinos intensos.</p>
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <div class="p-3 bg-white rounded-3 shadow-sm border">
-                                    <h3 class="fw-bold text-primary mb-1">+15k</h3>
-                                    <p class="text-muted mb-0 small">Atletas Satisfeitos</p>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-3 bg-white rounded-3 shadow-sm border">
-                                    <h3 class="fw-bold text-primary mb-1">100%</h3>
-                                    <p class="text-muted mb-0 small">Garantia de Qualidade</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: CONTACT -->
-        <section id="sec-contact" class="content-section d-none py-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
-                            <div class="text-center mb-4">
-                                <h2 class="fw-bold">Fale Conosco</h2>
-                                <p class="text-muted">Tem alguma dúvida sobre pedidos, entregas ou produtos? Envie sua mensagem.</p>
-                            </div>
-                            <form id="contactForm" onsubmit="handleContactSubmit(event)">
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Nome Completo</label>
-                                    <input type="text" class="form-control" id="contactName" required placeholder="Seu nome">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">E-mail</label>
-                                    <input type="email" class="form-control" id="contactEmail" required placeholder="seu@email.com">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium" for="contactSubject">Assunto</label>
-                                    <input type="text" class="form-control" id="contactSubject" maxlength="200" required placeholder="Sobre o que deseja falar?">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Mensagem</label>
-                                    <textarea class="form-control" id="contactMsg" rows="4" required placeholder="Como podemos ajudar?"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-semibold">Enviar Mensagem</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
+
+    <footer class="site-footer pt-5">
+        <div class="container">
+            <div class="row g-4 pb-4">
+                <div class="col-lg-5">
+                    <a class="d-inline-block mb-3" href="#" onclick="showSection('home'); return false;" aria-label="ApexFit - início">
+                        <img src="src/img/Prancheta 23Logo Faltou Odio.png" alt="ApexFit" class="site-footer-brand">
+                    </a>
+                    <p class="text-white-50 mb-0">Equipamento, vestuário e inspiração para acompanhar cada etapa da sua evolução.</p>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <h2 class="site-footer-title mb-3">Navegação</h2>
+                    <ul class="list-unstyled d-grid gap-2 mb-0">
+                        <li><a class="site-footer-link" href="#" onclick="showSection('home'); return false;">Início</a></li>
+                        <li><a class="site-footer-link" href="#" onclick="showSection('catalog'); return false;">Produtos</a></li>
+                        <li><a class="site-footer-link" href="#" onclick="showSection('about'); return false;">Sobre Nós</a></li>
+                        <li><a class="site-footer-link" href="#" onclick="showSection('contact'); return false;">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-4">
+                    <h2 class="site-footer-title mb-3">Conte com a ApexFit</h2>
+                    <p class="text-white-50 mb-3">Precisa de ajuda com um produto ou pedido? A nossa equipa está pronta para ajudar.</p>
+                    <button type="button" class="btn btn-outline-light rounded-pill px-4" onclick="showSection('contact')">Fale Conosco <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            <div class="site-footer-bottom d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 py-3">
+                <small class="text-white-50">&copy; <span id="footerYear"></span> ApexFit. Todos os direitos reservados.</small>
+                <a class="site-footer-link small" href="#" onclick="showSection('home'); return false;">Voltar ao início <i class="fa-solid fa-arrow-up ms-1" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </footer>
 
     <!-- Modal: Detalhes do Produto & Comentários -->
     <div class="modal fade" id="productModal" tabindex="-1">
@@ -502,12 +740,18 @@
 
         // Navegação entre Seções
         function showSection(sectionId) {
+            const visibleSectionId = ['about', 'contact'].includes(sectionId) ? 'home' : sectionId;
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('d-none'));
-            document.getElementById(`sec-${sectionId}`).classList.remove('d-none');
-            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(`sec-${visibleSectionId}`).classList.remove('d-none');
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                link.classList.toggle('active', link.dataset.section === sectionId);
+            });
 
             if (sectionId === 'catalog') renderProducts(products);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const target = ['about', 'contact'].includes(sectionId) ? document.getElementById(`sec-${sectionId}`) : null;
+            const navbarHeight = document.querySelector('.navbar.sticky-top')?.offsetHeight || 0;
+            const top = target ? target.getBoundingClientRect().top + window.scrollY - navbarHeight : 0;
+            window.scrollTo({ top, behavior: 'smooth' });
         }
 
         // RenderizarProdutos no Catálogo
@@ -1256,6 +1500,7 @@
         window.onload = async function() {
             updateCartStorage();
             document.getElementById('wishlistCount').innerText = wishlist.length;
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
             renderWishlistModal();
             if (window.location.protocol === 'file:') {
                 showToast('Abra a loja pelo XAMPP, por exemplo em http://localhost/E-commerce/, para carregar os dados da API.');
