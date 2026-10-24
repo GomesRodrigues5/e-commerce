@@ -49,6 +49,10 @@ Antes de iniciar, crie `.env` a partir de `.env.example` e configure os dados re
 
 Abra a loja pelo servidor web (por exemplo, `http://localhost/E-commerce/` no XAMPP), não diretamente como ficheiro `file://`. Em desenvolvimento, a API permite origens locais como `localhost` e `127.0.0.1`; em produção, configure `CORS_ORIGIN` com as origens exatas permitidas. Use o botão Admin para abrir `admin.html`. O token administrativo expira após oito horas e fica guardado na sessão do separador; o login permite até dez tentativas por 15 minutos.
 
+### Publicação no GitHub Pages
+
+O GitHub Pages publica apenas os ficheiros estáticos do site; não executa o servidor Node nem disponibiliza a API ou o MySQL. Para registo, login, catálogo e restantes funções ligadas ao banco funcionarem no telefone, publique a API Node e a base de dados num serviço compatível e acessível por HTTPS. Depois, configure `window.APEXFIT_API_URL` em `src/api-config.js` com a URL base da API, sem uma barra no fim (por exemplo, `https://api.seudominio.com`), e publique novamente o site. Configure também `CORS_ORIGIN` no servidor com a origem exata do GitHub Pages, por exemplo `https://gomesrodrigues5.github.io` — sem o caminho do repositório — e confirme que o endpoint `/health` da API responde com JSON. Não use `localhost` como URL da API publicada: num telefone, ele aponta para o próprio telefone.
+
 O painel permite criar, editar e desativar produtos, carregar imagens PNG/JPEG/WEBP/GIF até 5 MB, gerir campanhas publicitárias com datas de publicação e desativação automática, atualizar estados de encomendas, consultar vendas agregadas e ler mensagens. Os ficheiros são guardados em `public/uploads`; mantenha essa pasta em armazenamento persistente no servidor. Todos os endpoints administrativos exigem token. A primeira conta é criada por `npm run db:admin:create`, usando as credenciais configuradas no servidor.
 
 ## Contas, compras e reservas

@@ -707,18 +707,28 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="src/api-config.js"></script>
     <script>
-        const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+        const configuredApiUrl = String(window.APEXFIT_API_URL || '').trim().replace(/\/+$/, '');
+        const API_URL = configuredApiUrl || (['localhost', '127.0.0.1'].includes(window.location.hostname)
             ? `${window.location.protocol}//${window.location.hostname}:3000`
-            : window.location.origin;
+            : window.location.origin);
         const customerTokenKey = 'apex_customer_token';
 
         async function fetchCustomerApi(path, options) {
+            if (window.location.hostname.endsWith('github.io') && !configuredApiUrl) {
+                throw new Error('O cadastro precisa da API online. Configure o endereço do servidor em src/api-config.js e publique novamente o site.');
+            }
             try {
-                return await fetch(`${API_URL}${path}`, options);
+                const response = await fetch(`${API_URL}${path}`, options);
+                if (!response.headers.get('content-type')?.includes('application/json')) {
+                    throw new Error(`O endereço da API (${API_URL}) devolveu uma página em vez de JSON. Confirme se configurou o endereço do servidor da API, e não o endereço do site.`);
+                }
+                return response;
             } catch (error) {
+                if (error instanceof Error && !(error instanceof TypeError)) throw error;
                 if (error instanceof TypeError) {
-                    throw new Error(`Não foi possível ligar à API em ${API_URL}. Inicie o servidor da API com "npm start" e confirme que a porta 3000 está disponível.`);
+                    throw new Error(`Não foi possível ligar à API em ${API_URL}. Confirme que o servidor está publicado e permite pedidos do domínio deste site.`);
                 }
                 throw error;
             }

@@ -1,6 +1,7 @@
-const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+const configuredApiUrl = String(window.APEXFIT_API_URL || '').trim().replace(/\/+$/, '');
+const API_URL = configuredApiUrl || (['localhost', '127.0.0.1'].includes(window.location.hostname)
   ? `${window.location.protocol}//${window.location.hostname}:3000`
-  : window.location.origin;
+  : window.location.origin);
 const tokenKey = 'apex_admin_token';
 const orderStatuses = ['PENDING', 'PAYMENT_PENDING', 'PAID', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'FAILED', 'RESERVED'];
 const loginPanel = document.getElementById('loginPanel');
@@ -25,12 +26,19 @@ function element(tag, text, className) {
 }
 
 async function api(path, options = {}) {
+  if (window.location.hostname.endsWith('github.io') && !configuredApiUrl) {
+    throw new Error('A API ainda não está configurada. Defina o endereço do servidor em src/api-config.js e publique novamente o site.');
+  }
   const headers = new Headers(options.headers || {});
   const token = sessionStorage.getItem(tokenKey);
   if (token) headers.set('Authorization', `Bearer ${token}`);
   if (options.body && !(options.body instanceof FormData)) headers.set('Content-Type', 'application/json');
   const response = await fetch(`${API_URL}${path}`, { ...options, headers });
-  const result = await response.json().catch(() => ({}));
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`O endereço da API (${API_URL}) devolveu uma página em vez de JSON. Confirme o endereço do servidor da API.`);
+  }
+  const result = await response.json();
   if (response.status === 401 && path !== '/api/admin/login') {
     sessionStorage.removeItem(tokenKey);
     showLogin();
