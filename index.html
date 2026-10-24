@@ -715,23 +715,26 @@
             : window.location.origin);
         const customerTokenKey = 'apex_customer_token';
 
-        async function fetchCustomerApi(path, options) {
-            if (window.location.hostname.endsWith('github.io') && !configuredApiUrl) {
-                throw new Error('O cadastro precisa da API online. Configure o endereço do servidor em src/api-config.js e publique novamente o site.');
+        async function apiFetch(path, options) {
+            if (!configuredApiUrl && !['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+                throw new Error('Os dados precisam da API online. Publique o servidor Node e configure a URL em src/api-config.js.');
             }
             try {
                 const response = await fetch(`${API_URL}${path}`, options);
                 if (!response.headers.get('content-type')?.includes('application/json')) {
-                    throw new Error(`O endereço da API (${API_URL}) devolveu uma página em vez de JSON. Confirme se configurou o endereço do servidor da API, e não o endereço do site.`);
+                    throw new Error(`O endereço configurado (${API_URL}) devolveu uma página HTML em vez de JSON. Configure em src/api-config.js a URL pública da API Node, não a URL do site.`);
                 }
                 return response;
             } catch (error) {
-                if (error instanceof Error && !(error instanceof TypeError)) throw error;
                 if (error instanceof TypeError) {
-                    throw new Error(`Não foi possível ligar à API em ${API_URL}. Confirme que o servidor está publicado e permite pedidos do domínio deste site.`);
+                    throw new Error(`Não foi possível ligar à API em ${API_URL}. Confirme que o servidor está publicado e permite pedidos de ${window.location.origin}.`);
                 }
                 throw error;
             }
+        }
+
+        async function fetchCustomerApi(path, options) {
+            return apiFetch(path, options);
         }
 
         let products = [];
@@ -959,7 +962,7 @@
             }
 
             try {
-                const response = await fetch(`${API_URL}/api/orders`, {
+                const response = await apiFetch('/api/orders', {
                     method: 'POST',
                     headers: customerHeaders(),
                     body: JSON.stringify({
@@ -970,7 +973,7 @@
                 });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || 'Não foi possível criar o pedido');
-                const paymentResponse = await fetch(`${API_URL}/api/orders/${result.order.id}/payments`, { method: 'POST', headers: customerHeaders() });
+                const paymentResponse = await apiFetch(`/api/orders/${result.order.id}/payments`, { method: 'POST', headers: customerHeaders() });
                 const paymentResult = await paymentResponse.json();
                 if (!paymentResponse.ok) throw new Error(paymentResult.message || 'Não foi possível iniciar o pagamento');
                 if (paymentResult.payment.redirectUrl) {
@@ -997,7 +1000,7 @@
                 return;
             }
             try {
-                const response = await fetch(`${API_URL}/api/orders/reservations`, {
+                const response = await apiFetch('/api/orders/reservations', {
                     method: 'POST',
                     headers: customerHeaders(),
                     body: JSON.stringify({ items: cart.map(item => ({ productId: item.id, quantity: item.qty })) })
@@ -1070,7 +1073,7 @@
         async function loadCustomerOrders() {
             const container = document.getElementById('customerOrders');
             try {
-                const response = await fetch(`${API_URL}/api/customers/orders`, { headers: customerHeaders() });
+                const response = await apiFetch('/api/customers/orders', { headers: customerHeaders() });
                 const orders = await response.json();
                 if (!response.ok) throw new Error(orders.message || 'Não foi possível carregar as encomendas');
                 container.replaceChildren();
@@ -1157,7 +1160,7 @@
         async function loadRecommendations() {
             if (!sessionStorage.getItem(customerTokenKey)) return;
             try {
-                const response = await fetch(`${API_URL}/api/customers/recommendations`, { headers: customerHeaders() });
+                const response = await apiFetch('/api/customers/recommendations', { headers: customerHeaders() });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || 'Não foi possível carregar recomendações');
                 document.getElementById('recommendationMessage').textContent = `${result.message} ${result.source === 'ai' ? 'Personalizado com IA.' : 'Sugestões por preferências.'}`;
@@ -1170,7 +1173,7 @@
 
         async function loadAdvertisements() {
             try {
-                const response = await fetch(`${API_URL}/api/advertisements`);
+                const response = await apiFetch('/api/advertisements');
                 const ads = await response.json();
                 if (!response.ok) throw new Error(ads.message || 'Não foi possível carregar publicidades');
                 const grid = document.getElementById('advertisementGrid');
@@ -1271,7 +1274,7 @@
 
         document.getElementById('savePreferencesButton').addEventListener('click', async () => {
             try {
-                const response = await fetch(`${API_URL}/api/customers/preferences`, {
+                const response = await apiFetch('/api/customers/preferences', {
                     method: 'PUT',
                     headers: customerHeaders(),
                     body: JSON.stringify({ preferenceIds: selectedPreferences('accountPreferenceList') })
@@ -1380,7 +1383,7 @@
         }
 
         async function loadReviews(productId) {
-            const response = await fetch(`${API_URL}/api/products/${productId}/reviews`);
+            const response = await apiFetch(`/api/products/${productId}/reviews`);
             const reviews = await response.json();
             renderComments(reviews);
         }
@@ -1412,7 +1415,7 @@
                 bootstrap.Modal.getOrCreateInstance(document.getElementById('accountModal')).show();
                 return;
             }
-            const response = await fetch(`${API_URL}/api/reviews`, {
+            const response = await apiFetch('/api/reviews', {
                 method: 'POST',
                 headers: customerHeaders(),
                 body: JSON.stringify({ productId: currentModalProductId, rating: 5, comment: text })
@@ -1432,7 +1435,7 @@
             const subject = document.getElementById('contactSubject').value;
             const message = document.getElementById('contactMsg').value;
             try {
-                const response = await fetch(`${API_URL}/api/contact`, {
+                const response = await apiFetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, subject, message })
@@ -1458,7 +1461,7 @@
             const fetchPage = async page => {
                 const params = new URLSearchParams({ limit: String(limit), page: String(page) });
                 if (categoryId) params.set('categoryId', categoryId);
-                const response = await fetch(`${API_URL}/api/products?${params}`);
+                const response = await apiFetch(`/api/products?${params}`);
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || 'Não foi possível carregar os produtos');
                 return result;
@@ -1483,7 +1486,7 @@
         }
 
         async function loadCategories() {
-            const response = await fetch(`${API_URL}/api/categories`);
+            const response = await apiFetch('/api/categories');
             const result = await response.json();
             if (!response.ok) throw new Error(result.message || 'Não foi possível carregar as categorias');
             categories = result;
@@ -1524,7 +1527,7 @@
                 await Promise.all([loadProducts(), loadCategories(), loadCustomerLocations(), loadAdvertisements()]);
                 const token = sessionStorage.getItem(customerTokenKey);
                 if (token) {
-                    const response = await fetch(`${API_URL}/api/customers/session`, { headers: customerHeaders() });
+                    const response = await apiFetch('/api/customers/session', { headers: customerHeaders() });
                     const result = await response.json();
                     if (response.ok) updateCustomerSession(result.customer);
                     else sessionStorage.removeItem(customerTokenKey);
